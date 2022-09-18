@@ -1,0 +1,21 @@
+spring:
+#  datasource:
+##    메모리 모드 실행
+#    url: jdbc:h2:mem:test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        show_sql: true
+#    database: h2
+
+logging.level:
+  org.hibernate:
+    SQL: debug
+    type: trace
