@@ -48,4 +48,47 @@ public class Order {
         this.delivery = delivery;
         delivery.setOrder(this);
     }
+
+    /**
+     * 주문 생성
+     * @param member=회원정보
+     * @param delivery=주문
+     * @param orderItems=상품
+     * @return
+     */
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems){
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for(OrderItem orderItem : orderItems){
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void cancel(){
+        if(delivery.getStatus() == DeliveryStatus.COMP){
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
+        }
+
+        this.setStatus(OrderStatus.CANCEL);
+        for(OrderItem orderItem : orderItems){
+            orderItem.cancel();
+        }
+    }
+
+    /**
+     * 주문총액 계산
+     * @return 주문 총 가격
+     */
+    public int getTotalPrice(){
+        return orderItems.stream()
+                .mapToInt(OrderItem::getTotalPrice)
+                .sum();
+    }
 }
